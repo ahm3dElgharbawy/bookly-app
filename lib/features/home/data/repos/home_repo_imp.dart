@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:bookly_app/features/home/data/models/book_model/book_model.dart';
 
 import 'package:bookly_app/core/errors/failure.dart';
+import 'package:dio/dio.dart';
 
 import 'home_repo.dart';
 
@@ -20,7 +21,11 @@ class HomeRepoImp extends HomeRepo {
       List<BookModel> books = BookModel.parse(data: data);
       return right(books);
     } catch (e) {
-      return left(ServerFailure());
+      if (e is DioException) {
+        return left(ServerFailure.fromDioException(e));
+      } else {
+        return left(ServerFailure(e.toString()));
+      }
     }
   }
 
