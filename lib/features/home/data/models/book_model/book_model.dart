@@ -69,4 +69,12 @@ class BookModel extends Equatable {
       searchInfo,
     ];
   }
+
+  static List<BookModel> parse({required data}) {
+    List<BookModel> books = [];
+    for (var item in data['items']) {
+      books.add(BookModel.fromJson(item));
+    }
+    return books;
+  }
 }
