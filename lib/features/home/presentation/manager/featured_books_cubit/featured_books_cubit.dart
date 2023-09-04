@@ -1,7 +1,5 @@
-import 'package:bookly_app/core/errors/failure.dart';
 import 'package:bookly_app/features/home/data/models/book_model/book_model.dart';
 import 'package:bookly_app/features/home/data/repos/home_repo.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,14 +12,13 @@ class FeaturedBooksCubit extends Cubit<FeaturedBooksState> {
 
   Future fetchFeaturedBooks() async {
     emit(FeaturedBooksLoading());
-    Either<Failure, List<BookModel>> result =
-        await homeRepo.fetchFeaturedBooks();
+    var result = await homeRepo.fetchFeaturedBooks();
     result.fold(
       (failure) => emit(
         FeaturedBooksFailure(errorMsg: failure.errorMsg),
       ),
       (books) => emit(
-        FeaturedBooksSuccess(books: books),
+        FeaturedBooksSuccess(featuredbooks: books),
       ),
     );
   }
