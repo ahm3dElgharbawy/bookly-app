@@ -4,8 +4,8 @@ import 'package:bookly_app/constants.dart';
 import 'package:flutter/material.dart';
 
 class FeaturedBooksListViewItem extends StatelessWidget {
-  final String imageName;
-  const FeaturedBooksListViewItem({super.key, required this.imageName});
+  final String imageUrl;
+  const FeaturedBooksListViewItem({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class FeaturedBooksListViewItem extends StatelessWidget {
         child: Container(
           decoration: kBoxDecorationWithRadius20.copyWith(
             image: DecorationImage(
-              image: AssetImage(imageName),
+              image: NetworkImage(imageUrl),
               fit: BoxFit.cover,
             ),
           ),
