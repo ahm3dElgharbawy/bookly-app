@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bookly_app/core/helper/api_service.dart';
 import 'package:dartz/dartz.dart';
 
@@ -11,6 +13,26 @@ import 'home_repo.dart';
 class HomeRepoImp extends HomeRepo {
   final ApiService apiService;
   HomeRepoImp({required this.apiService});
+
+  @override
+  Future<Either<Failure, List<BookModel>>> fetchFeaturedBooks() async {
+    try {
+      var data = await apiService.get(
+        endPoints: "volumes?Filtering=free-ebooks&q=computer science",
+      );
+      List<BookModel> books = BookModel.parse(data: data);
+      return right(books);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioException(e));
+      } else if (e is SocketException) {
+        return left(ServerFailure("check internet connection"));
+      } else {
+        return left(ServerFailure(e.toString()));
+      }
+    }
+  }
+
   @override
   Future<Either<Failure, List<BookModel>>> fetchNewestBooks() async {
     try {
@@ -23,6 +45,8 @@ class HomeRepoImp extends HomeRepo {
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioException(e));
+      } else if (e is SocketException) {
+        return left(ServerFailure("check internet connection"));
       } else {
         return left(ServerFailure(e.toString()));
       }
@@ -30,17 +54,19 @@ class HomeRepoImp extends HomeRepo {
   }
 
   @override
-  Future<Either<Failure, List<BookModel>>> fetchFeaturedBooks() async{
+  Future<Either<Failure, List<BookModel>>> fetchSimilarBooks(
+      {required String category}) async {
     try {
       var data = await apiService.get(
-        endPoints:
-            "volumes?Filtering=free-ebooks&q=subject:programming",
+        endPoints: "volumes?Filtering=free-ebooks&q=subject:$category",
       );
       List<BookModel> books = BookModel.parse(data: data);
       return right(books);
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioException(e));
+      } else if (e is SocketException) {
+        return left(ServerFailure("check internet connection"));
       } else {
         return left(ServerFailure(e.toString()));
       }

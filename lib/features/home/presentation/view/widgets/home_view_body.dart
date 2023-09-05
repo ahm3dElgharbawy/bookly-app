@@ -3,7 +3,7 @@ import 'package:bookly_app/core/helper/styles.dart';
 import 'package:bookly_app/features/home/presentation/view/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';
 
-import 'best_seller/best_seller_list_view.dart';
+import 'newest_books/newest_books_list_view.dart';
 import 'featured_books/featured_books_list_view.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -36,7 +36,7 @@ class HomeViewBody extends StatelessWidget {
                 ),
               ]),
         ),
-        const SliverToBoxAdapter(child: BestSellerListView())
+        const SliverToBoxAdapter(child: NewestBooksListView())
       ],
     );
   }
